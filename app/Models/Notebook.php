@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class Notebook extends Model
@@ -20,7 +21,7 @@ class Notebook extends Model
 		'date_of_birth'
 	];
 
-	public function saveAvatarFromRequest(Request $request)
+	public function savePhotoFromRequest(Request $request)
 	{
 		if ($request->hasFile('photo_file')) {
 			$fileRequest = $request->file('photo_file');
@@ -33,5 +34,15 @@ class Notebook extends Model
 				$this->save();
 			}
 		}
+	}
+
+	public function deletePhoto()
+	{
+		if (empty($this->photo_url)) return;
+
+		$filePath = 'public/' . $this->photo_url;
+		if (!Storage::exists($filePath)) return;
+
+		Storage::delete($filePath);
 	}
 }
