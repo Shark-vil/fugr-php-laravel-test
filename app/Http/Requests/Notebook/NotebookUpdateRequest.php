@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Requests\Notebook;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+
+class NotebookUpdateRequest extends FormRequest
+{
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		return true;
+	}
+
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		$id = $this->route('id');
+
+		return [
+			'full_name' => 'string|max:200|nullable',
+			'company_name' => 'string|max:200|nullable',
+			'phone_number' => 'phone:RU|max:20|unique:notebooks,phone_number,' . $id . '|nullable',
+			'email' => 'email:rfc|unique:notebooks,email,' . $id . '|nullable',
+			'date_of_birth' => 'date|date_format:Y-m-d|nullable',
+			'photo_file' => 'image|mimes:jpg,png,jpeg|max:2048|nullable'
+		];
+	}
+
+	protected function failedValidation(Validator $validator)
+	{
+		$errors = (new ValidationException($validator))->errors();
+
+		throw new HttpResponseException(
+			response()->json(['errors' => $errors], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+		);
+	}
+}
