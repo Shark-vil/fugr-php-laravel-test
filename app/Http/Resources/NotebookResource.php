@@ -15,13 +15,13 @@ class NotebookResource extends JsonResource
     public function toArray($request)
     {
         return [
-					'id' => $request->id,
-					'full_name' => $request->full_name,
-					'company_name' => $request->company_name,
-					'phone_number' => $request->phone_number,
-					'email' => $request->email,
-					'date_of_birth' => $request->date_of_birth,
-					'photo_url' => $request->photo_url
+					'id' => $this->id,
+					'full_name' => $this->full_name,
+					'company_name' => $this->company_name,
+					'phone_number' => $this->phone_number,
+					'email' => $this->email,
+					'date_of_birth' => $this->date_of_birth,
+					'photo_url' => is_string($this->photo_url) ? asset('storage/' . $this->photo_url) : null
 				];
     }
 }
