@@ -13,6 +13,16 @@ use App\Http\Resources\NotebookCollectionResource;
 
 class NotebookController extends Controller
 {
+	/**
+	 * Returns a list of records from the database.
+	 * 
+	 * Request parametrs:
+	 * int limit - default 100
+	 * int page - default 0
+	 * 
+	 * @param  \App\Http\Requests\Notebook\NotebookIndexRequest $request
+	 * @return object|\App\Http\Resources\NotebookCollectionResource
+	 */
 	public function index(NotebookIndexRequest $request)
 	{
 		$limit = (int)$request->input('limit', 100);
@@ -25,11 +35,23 @@ class NotebookController extends Controller
 		return new NotebookCollectionResource($records);
 	}
 
+	/**
+	 * Retrieves a record from the database by id.
+	 *
+	 * @param int $id
+	 * @return object|\App\Http\Resources\NotebookResource
+	 */
 	public function show(int $id)
 	{
 		return new NotebookResource(Notebook::findOrFail($id));
 	}
 
+	/**
+	 * Adds a new entry to the database.
+	 *
+	 * @param \App\Http\Requests\Notebook\NotebookStoreRequest $request
+	 * @return object|\App\Http\Resources\NotebookResource
+	 */
 	public function store(NotebookStoreRequest $request)
 	{
 		$notebook = Notebook::create($request->all());
@@ -37,6 +59,13 @@ class NotebookController extends Controller
 		return new NotebookResource($notebook);
 	}
 
+	/**
+	 * Updates the fields of a record in the database by ID.
+	 *
+	 * @param \App\Http\Requests\Notebook\NotebookUpdateRequest $request
+	 * @param int $id
+	 * @return object|\App\Http\Resources\NotebookResource
+	 */
 	public function update(NotebookUpdateRequest $request, int $id)
 	{
 		$notebook = Notebook::findOrFail($id);
@@ -45,6 +74,12 @@ class NotebookController extends Controller
 		return new NotebookResource($notebook);
 	}
 
+	/**
+	 * Deletes a record from the database by ID.
+	 *
+	 * @param int $id
+	 * @return null
+	 */
 	public function destroy(int $id)
 	{
 		$notebook = Notebook::findOrFail($id);
