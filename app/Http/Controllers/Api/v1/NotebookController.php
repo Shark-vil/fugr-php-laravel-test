@@ -6,14 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Notebook\NotebookStoreRequest;
 use App\Http\Requests\Notebook\NotebookUpdateRequest;
+use App\Http\Requests\Notebook\NotebookIndexRequest;
 use App\Models\Notebook;
 use App\Http\Resources\NotebookResource;
+use App\Http\Resources\NotebookCollectionResource;
 
 class NotebookController extends Controller
 {
-	public function index()
+	public function index(NotebookIndexRequest $request)
 	{
-		return NotebookResource::collection(Notebook::all());
+		$limit = (int)$request->input('limit', 100);
+		$page = (int)$request->input('page', 0);
+
+		$records = Notebook::skip($page * $limit)
+			->take($limit)
+			->get();
+
+		return new NotebookCollectionResource($records);
 	}
 
 	public function show(int $id)
