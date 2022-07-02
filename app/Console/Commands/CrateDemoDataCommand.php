@@ -12,7 +12,7 @@ class CrateDemoDataCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'demo:makedata';
+	protected $signature = 'demo:makedata {--count=}';
 
 	/**
 	 * The console command description.
@@ -38,7 +38,9 @@ class CrateDemoDataCommand extends Command
 	 */
 	public function handle()
 	{
-		$result = Notebook::factory(300)->create();
+		$count = $this->option('count');
+		$count = !empty($count) ? intval($count) : 1;
+		$result = Notebook::factory(max(1, $count))->create();
 
 		echo('"' . count($result) . '" records were created in table "notebooks".');
 
