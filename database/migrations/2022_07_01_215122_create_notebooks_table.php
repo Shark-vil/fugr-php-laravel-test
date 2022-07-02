@@ -17,8 +17,8 @@ class CreateNotebooksTable extends Migration
             $table->id();
 						$table->string('full_name');
 						$table->string('company_name')->nullable();
-						$table->string('phone_number');
-						$table->string('email');
+						$table->string('phone_number')->unique();
+						$table->string('email')->unique();
 						$table->date('date_of_birth')->nullable();
 						$table->string('photo_url')->nullable();
             $table->timestamps();
