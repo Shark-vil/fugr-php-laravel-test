@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  # Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - network_driver
+
+  # Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/ssl/:/etc/nginx/ssl/
+    networks:
+      - network_driver
+
+  # MariaDB
+  db:
+    image: mariadb:10.7
+    container_name: db
+    restart: always
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_HOST: "0.0.0.0"
+      MARIADB_ROOT_PASSWORD: adminpassword
+    volumes:
+      - mysqldata:/var/lib/mysql/
+    networks:
+      - network_driver
+
+# Networks
+networks:
+  network_driver:
+    driver: bridge
+
+# Volumes
+volumes:
+  mysqldata:
+    driver: local
