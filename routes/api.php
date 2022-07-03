@@ -19,7 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::prefix('v1/notebook')->group(function () {
 	// GET /api/v1/notebook/
 	Route::get('/', [NotebookController::class, 'index']);
