@@ -62,8 +62,8 @@ class NotebookCollectionResource extends ResourceCollection
 	{
 		$total = Notebook::count();
 		$count = $this->collection->count();
-		$page = intval($request->input('page', 0));
-		$limit = math_clamp(intval($request->input('limit', 100)), 1, 100);
+		$page = (int)$request->input('page', 0);
+		$limit = (int)$request->input('limit', 100);
 		$left = (int)(($total / $limit) - $page);
 
 		return [

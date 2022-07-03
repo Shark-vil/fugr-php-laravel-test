@@ -41,8 +41,8 @@ class NotebookController extends Controller
 	 */
 	public function index(NotebookIndexRequest $request)
 	{
-		$limit = math_clamp(intval($request->input('limit', 100)), 1, 100);
-		$page = intval($request->input('page', 0));
+		$limit = (int)$request->input('limit', 100);
+		$page = (int)$request->input('page', 0);
 
 		$records = Notebook::skip($page * $limit)
 			->take($limit)
