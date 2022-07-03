@@ -45,6 +45,6 @@ class Handler extends ExceptionHandler
 								'message' => 'Record not found.'
 							], 404);
 					}
-			});
+				});
     }
 }
