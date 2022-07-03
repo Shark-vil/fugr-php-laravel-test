@@ -34,7 +34,7 @@ class NotebookIndexRequest extends NotebookRequest
 	{
 		return [
 			'limit' => 'integer|max:100|min:1|nullable',
-			'offset' => 'integer|min:0|nullable',
+			'page' => 'integer|min:0|nullable',
 		];
 	}
 }
