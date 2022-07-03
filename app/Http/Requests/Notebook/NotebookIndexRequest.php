@@ -2,6 +2,27 @@
 
 namespace App\Http\Requests\Notebook;
 
+/**
+ * @OA\Schema(
+ *     title="NotebookIndexRequest",
+ *     description="Notebook store request",
+ *     @OA\Xml(
+ *         name="NotebookIndexRequest"
+ *     ),
+ *		 @OA\Property(
+ * 		 		property="limit",
+ *     		title="Number of records",
+ *     		description="Number of records to display at a time (from 1 to 100)",
+ *     		format="integer"
+ *		 ),
+ *		 @OA\Property(
+ * 		 		property="page",
+ *     		title="Page number",
+ *     		description="Page number to display records",
+ *     		format="integer"
+ *		 )
+ * )
+ */
 class NotebookIndexRequest extends NotebookRequest
 {
 	/**
