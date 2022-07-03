@@ -1,0 +1,414 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "API documentation from the test task - https://github.com/fugr-ru/php-laravel",
+        "contact": {
+            "email": "shark_vil@mail.ru"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://fugrtest.localhost/api/v1",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/notebook": {
+            "get": {
+                "tags": [
+                    "Notebooks"
+                ],
+                "summary": "Listing all entries",
+                "description": "Returns a list of records from the database.",
+                "operationId": "indexNotebook",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of records to display at a time (from 1 to 100)",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number to display records",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotebookCollectionResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Notebooks"
+                ],
+                "summary": "Adding an entry to the database",
+                "description": "Adds a new entry to the database.",
+                "operationId": "storeNotebook",
+                "requestBody": {
+                    "description": "Content",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NotebookStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotebookResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                }
+            }
+        },
+        "/notebook/{id}": {
+            "get": {
+                "tags": [
+                    "Notebooks"
+                ],
+                "summary": "Displaying an existing entry",
+                "description": "Retrieves a record from the database by id.",
+                "operationId": "showNotebook",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotebookResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Notebooks"
+                ],
+                "summary": "Update an existing entry",
+                "description": "Updates the fields of a record in the database by ID.",
+                "operationId": "updateNotebook",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "description": "Content",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NotebookUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotebookResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    },
+                    "404": {
+                        "description": "Record not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Notebooks"
+                ],
+                "summary": "Deleting an existing entry",
+                "description": "Deletes a record from the database by ID.",
+                "operationId": "destroyNotebook",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Record not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "NotebookIndexRequest": {
+                "title": "NotebookIndexRequest",
+                "description": "Notebook store request",
+                "properties": {
+                    "limit": {
+                        "title": "Number of records",
+                        "description": "Number of records to display at a time (from 1 to 100)",
+                        "format": "integer"
+                    },
+                    "page": {
+                        "title": "Page number",
+                        "description": "Page number to display records",
+                        "format": "integer"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NotebookIndexRequest"
+                }
+            },
+            "NotebookStoreRequest": {
+                "title": "NotebookStoreRequest",
+                "description": "Notebook store request",
+                "required": [
+                    "full_name",
+                    "phone_number",
+                    "email"
+                ],
+                "properties": {
+                    "full_name": {
+                        "title": "Full name",
+                        "description": "Full name of the person",
+                        "format": "string",
+                        "example": "Zubenko Mihail Petrovih"
+                    },
+                    "company_name": {
+                        "title": "Company name",
+                        "description": "Company name",
+                        "format": "string",
+                        "example": "OOO Akhen"
+                    },
+                    "phone_number": {
+                        "title": "Phone number",
+                        "description": "Phone number",
+                        "format": "string",
+                        "example": "+7-(926)-052-25-76"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email address",
+                        "format": "email",
+                        "example": "posts@mail.ru"
+                    },
+                    "date_of_birth": {
+                        "title": "Date of Birth",
+                        "description": "Person date of birth",
+                        "format": "date",
+                        "example": "2000-06-15"
+                    },
+                    "photo_file": {
+                        "title": "Photo file",
+                        "description": "Image file",
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NotebookStoreRequest"
+                }
+            },
+            "NotebookUpdateRequest": {
+                "title": "NotebookUpdateRequest",
+                "description": "Notebook store request",
+                "properties": {
+                    "full_name": {
+                        "title": "Full name",
+                        "description": "Full name of the person",
+                        "format": "string",
+                        "example": "Zubenko Mihail Petrovih"
+                    },
+                    "company_name": {
+                        "title": "Company name",
+                        "description": "Company name",
+                        "format": "string",
+                        "example": "OOO Akhen"
+                    },
+                    "phone_number": {
+                        "title": "Phone number",
+                        "description": "Phone number",
+                        "format": "string",
+                        "example": "+7-(926)-052-25-76"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email address",
+                        "format": "email",
+                        "example": "posts@mail.ru"
+                    },
+                    "date_of_birth": {
+                        "title": "Date of Birth",
+                        "description": "Person date of birth",
+                        "format": "date",
+                        "example": "2000-06-15"
+                    },
+                    "photo_file": {
+                        "title": "Photo file",
+                        "description": "Image file",
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NotebookUpdateRequest"
+                }
+            },
+            "NotebookCollectionResource": {
+                "title": "NotebookCollectionResource",
+                "description": "Notebook collection resource",
+                "properties": {
+                    "total": {
+                        "title": "Total",
+                        "description": "Number of records in the database",
+                        "format": "int",
+                        "example": 10
+                    },
+                    "page": {
+                        "title": "Page",
+                        "description": "Current page number selected",
+                        "format": "int",
+                        "example": 5
+                    },
+                    "left": {
+                        "title": "Left",
+                        "description": "Number of remaining available pages",
+                        "format": "int",
+                        "example": 0
+                    },
+                    "count": {
+                        "title": "Count",
+                        "description": "Number of records displayed",
+                        "format": "int",
+                        "example": 1
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NotebookResource"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NotebookCollectionResource"
+                }
+            },
+            "NotebookResource": {
+                "title": "NotebookResource",
+                "description": "Notebook resource",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "Record ID in the database",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "full_name": {
+                        "title": "FullName",
+                        "description": "Full name of the person",
+                        "format": "string",
+                        "example": "Zubenko Mihail Petrovih"
+                    },
+                    "company_name": {
+                        "title": "Company name",
+                        "description": "Company name",
+                        "format": "string",
+                        "example": "OOO Akhen"
+                    },
+                    "phone_number": {
+                        "title": "Phone number",
+                        "description": "Phone number",
+                        "format": "string",
+                        "example": "+7-(926)-052-25-76"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email address",
+                        "format": "string",
+                        "example": "posts@mail.ru"
+                    },
+                    "date_of_birth": {
+                        "title": "Date of Birth",
+                        "description": "Person date of birth",
+                        "format": "date",
+                        "example": "2000-06-15"
+                    },
+                    "photo_url": {
+                        "title": "Photo url",
+                        "description": "Web link to image",
+                        "format": "string",
+                        "example": "http://api.com/storage/notebook/photos/1.png"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NotebookResource"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Projects",
+            "description": "API Endpoints of Projects"
+        }
+    ]
+}
