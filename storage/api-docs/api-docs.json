@@ -327,6 +327,12 @@
                         "format": "int",
                         "example": 5
                     },
+                    "limit": {
+                        "title": "Limit",
+                        "description": "The number of records that can be displayed",
+                        "format": "int",
+                        "example": 100
+                    },
                     "left": {
                         "title": "Left",
                         "description": "Number of remaining available pages",
