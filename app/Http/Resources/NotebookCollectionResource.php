@@ -28,6 +28,13 @@ use App\Models\Notebook;
  *     		example=5
  *		 ),
  *		 @OA\Property(
+ * 		 		property="limit",
+ *     		title="Limit",
+ *     		description="The number of records that can be displayed",
+ *     		format="int",
+ *     		example=100
+ *		 ),
+ *		 @OA\Property(
  * 		 		property="left",
  *     		title="Left",
  *     		description="Number of remaining available pages",
@@ -69,6 +76,7 @@ class NotebookCollectionResource extends ResourceCollection
 		return [
 			'total' => $total,
 			'page' => $page,
+			'limit' => $limit,
 			'left' => max(0, $left),
 			'count' => $count,
 			'data' => $this->collection,
